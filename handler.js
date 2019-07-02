@@ -1,14 +1,17 @@
 'use strict';
 
-module.exports.hello = async (event) => {
-  return {
-    statusCode: 200,
-    body: JSON.stringify({
-      message: 'Go Serverless v1.0! Your function executed successfully!',
-      input: event,
-    }, null, 2),
-  };
+module.exports.triggerStream = (event, context, callback) => {
+  console.log('trigger stream was called');
 
-  // Use this code if you don't use the http event with the LAMBDA-PROXY integration
-  // return { message: 'Go Serverless v1.0! Your function executed successfully!', event };
+  
+  //En terminal se pueden capturar los eventos 
+  //con este código: serverless logs -f triggerStream -t
+  //más lo que sigue a continuación
+  const eventData = event.Records[0];
+  console.log(eventData);
+
+  console.log(eventData.dynamodb.Keys);
+  callback(null, null);
+  
+
 };

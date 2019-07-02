@@ -255,9 +255,18 @@ custom:
         request: "Zone.trips.req.vtl"
         response: "Zone.trips.res.vtl"
     
-#functions:
-#  hello:
-#    handler: handler.hello
+functions:
+  triggerStream:
+      handler: handler.triggerStream
+      events:
+        - stream:
+            type: dynamodb
+            batchSize: 1
+            startingPosition: LATEST
+            arn:
+              Fn::GetAtt:
+                - Trip
+                - StreamArn
 
 resources:
   Resources:
@@ -302,6 +311,8 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
+        StreamSpecification:
+          StreamViewType: KEYS_ONLY #Valid Values: NEW_IMAGE | OLD_IMAGE | NEW_AND_OLD_IMAGES | KEYS_ONLY
 
     Region: # name of the resource to be use later
       Type: "AWS::DynamoDB::Table"
