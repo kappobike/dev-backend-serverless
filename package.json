@@ -1,0 +1,17 @@
+{
+  "name": "kpobkd",
+  "version": "1.0.0",
+  "description": "",
+  "main": "handler.js",
+  "dependencies": {},
+  "devDependencies": {
+    "aws-sdk": "^2.485.0",
+    "serverless-appsync-plugin": "^1.1.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
