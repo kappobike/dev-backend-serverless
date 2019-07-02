@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "handler.js",
-  "dependencies": {},
+  "dependencies": {
+    "apollo-fetch": "^0.7.0"
+  },
   "devDependencies": {
     "aws-sdk": "^2.485.0",
     "serverless-appsync-plugin": "^1.1.2"
