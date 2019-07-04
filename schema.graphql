@@ -152,6 +152,7 @@ type Query {
   getTrip(id: ID!): Trip
   listTrips(filter: ModelTripFilterInput, limit: Int, nextToken: String): ModelTripConnection
   getRanking(id: ID!): Ranking
+  getRankingsByUser(filter: ModelUserProfileFilterInput, limit: Int, nextToken: String) : ModelRankingConnection
   listRankings(filter: ModelRankingFilterInput, limit: Int, nextToken: String): ModelRankingConnection
 }
 

@@ -100,7 +100,7 @@ custom:
         type: Query
         field: getTrip # from the query in schema.graphql
         request: "Query.getTrip.req.vtl"
-        response: "Common.res.vtl"
+        response: "Common.res.vtl" 
       - dataSource: TripTable
         type: Mutation
         field: createTrip # from the mutation in schema.graphql
@@ -258,6 +258,9 @@ custom:
 functions:
   triggerStream:
       handler: handler.triggerStream
+      environment:
+        SM_GRAPHQL_API: https://tbnj4flpbnhxxf4vtttqd7upze.appsync-api.us-east-1.amazonaws.com/graphql
+        API_KEY: da2-r5zx7mlnqnhhzlarhdr6qtbkju
       events:
         - stream:
             type: dynamodb
@@ -305,6 +308,10 @@ resources:
         AttributeDefinitions:
           - AttributeName: "id"
             AttributeType: "S"
+          - AttributeName: "tripUserId"
+            AttributeType: "S"
+          - AttributeName: "tripZoneId"
+            AttributeType: "S"
         KeySchema:
           - AttributeName: "id" # partition key
             KeyType: "HASH"
@@ -312,7 +319,26 @@ resources:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
         StreamSpecification:
-          StreamViewType: KEYS_ONLY #Valid Values: NEW_IMAGE | OLD_IMAGE | NEW_AND_OLD_IMAGES | KEYS_ONLY
+          StreamViewType: KEYS_ONLY #Valid Values: NEW_IMAGE | OLD_IMAGE | NEW_AND_OLD_IMAGES | KEYS_ONLY        
+        GlobalSecondaryIndexes:
+          - IndexName: "gsi-UserTrips"
+            KeySchema:
+            - AttributeName: tripUserId
+              KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
+          - IndexName: "gsi-ZoneTrips"
+            KeySchema:
+            - AttributeName: tripZoneId
+              KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
 
     Region: # name of the resource to be use later
       Type: "AWS::DynamoDB::Table"
@@ -321,12 +347,24 @@ resources:
         AttributeDefinitions:
           - AttributeName: "id"
             AttributeType: "S"
+          - AttributeName: "regionCountryId"
+            AttributeType: "S"
         KeySchema:
           - AttributeName: "id" # partition key
             KeyType: "HASH"
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
+        GlobalSecondaryIndexes:
+          - IndexName: "gsi-CountryRegions"
+            KeySchema:
+            - AttributeName: regionCountryId
+              KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
 
     Zone: # name of the resource to be use later
       Type: "AWS::DynamoDB::Table"
@@ -335,12 +373,24 @@ resources:
         AttributeDefinitions:
           - AttributeName: "id"
             AttributeType: "S"
+          - AttributeName: "zoneRegionId"
+            AttributeType: "S"
         KeySchema:
           - AttributeName: "id" # partition key
             KeyType: "HASH"
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
+        GlobalSecondaryIndexes:
+          - IndexName: "gsi-RegionZones"
+            KeySchema:
+            - AttributeName: zoneRegionId
+              KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
 
     Ranking: # name of the resource to be use later
       Type: "AWS::DynamoDB::Table"
@@ -349,11 +399,23 @@ resources:
         AttributeDefinitions:
           - AttributeName: "id"
             AttributeType: "S"
+          - AttributeName: "rankingUserId"
+            AttributeType: "S"
         KeySchema:
           - AttributeName: "id" # partition key
             KeyType: "HASH"
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
+        GlobalSecondaryIndexes:
+          - IndexName: "gsi-UserRankings"
+            KeySchema:
+            - AttributeName: rankingUserId
+              KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
 
  
