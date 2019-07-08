@@ -1,4 +1,4 @@
-service: sls-kpobackend-dev
+service: sls-kpobackend
 
 provider:
   name: aws
